@@ -68,6 +68,29 @@ class HashTable {
 
   insert(key, value) {
     // Your code here
+    const index = this.hashMod(key);
+    const newNode = new KeyValuePair(key, value);
+
+    if (this.data[index] === null) {
+      this.data[index] = newNode;
+    } else {
+      // Collision handling with linked list chaining
+      let current = this.data[index];
+      while (current !== null) {
+        if (current.key === key) {
+          // Key collision: update the value
+          current.value = value;
+          return;
+        }
+        if (current.next === null) break;
+        current = current.next;
+      }
+      // Insert the new node at the head of the linked list
+      newNode.next = this.data[index];
+      this.data[index] = newNode;
+    }
+
+    this.count++;
   }
 
 }
